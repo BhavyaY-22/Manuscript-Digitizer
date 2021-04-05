@@ -5,7 +5,6 @@ from IPython.display import Image
 from os import listdir
 from os.path import isfile, join
 import numpy
-import cv2
 
 app = Flask(__name__)
 
