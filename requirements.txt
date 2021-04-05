@@ -9,3 +9,4 @@ gunicorn==19.9.0
 torch==1.8.1+cpu 
 torchvision==0.9.1+cpu
 opencv-python==4.5.1.48
+openpyxl==3.0.0
