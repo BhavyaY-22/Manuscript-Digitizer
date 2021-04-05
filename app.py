@@ -124,3 +124,4 @@ def arc_ar():
 if __name__ == "__main__":
     app.run(debug=True)
     
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
