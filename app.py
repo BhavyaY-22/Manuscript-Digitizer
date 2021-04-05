@@ -11,9 +11,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    if os.path.isdir('images/'):
-        for filename in os.listdir('images/'):
-            os.remove('images/' + filename)
+    if os.path.isdir('datab/'):
+        for filename in os.listdir('datab/'):
+            os.remove('datab/' + filename)
     if os.path.isfile('output.txt'):
         os.remove('output.txt')
     return render_template("index.html")
@@ -38,7 +38,7 @@ def vconcat_resize(img_list, interpolation = cv2.INTER_CUBIC):
 
 @app.route("/process", methods=["POST","GET"])
 def process():
-    target = 'images/'
+    target = 'datab/'
     if not os.path.isdir(target):
         os.mkdir(target)
     
@@ -46,7 +46,7 @@ def process():
         filename = file.filename
         dest = "/".join([target, filename])
         file.save(dest)
-    mypath='images/'
+    mypath='datab/'
     onlyfiles = [ f for f in listdir(mypath) if isfile(join(mypath,f)) ]
     images = numpy.empty(len(onlyfiles), dtype=object)
     for n in range(0, len(onlyfiles)):
@@ -57,12 +57,12 @@ def process():
 
     img_v_resize = vconcat_resize([images[n] for n in range(0, len(onlyfiles))] )  
     # show the output image
-    cv2.imwrite('images/vconcat_resize.jpg', img_v_resize)
+    cv2.imwrite('datab/vconcat_resize.jpg', img_v_resize)
     i = request.form.get("language")
     reader = easyocr.Reader([i])
     # image file to be extracted
     
-    file_name = "images/vconcat_resize.jpg"
+    file_name = "datab/vconcat_resize.jpg"
     Image(file_name)
     # extracted text
     ot = reader.readtext(file_name, detail=0)
