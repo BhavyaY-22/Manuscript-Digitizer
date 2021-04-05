@@ -1,3 +1,4 @@
+-f https://download.pytorch.org/whl/torch_stable.html
 Flask==1.1.2
 ipython==7.8.0
 ipython-genutils==0.2.0
@@ -5,3 +6,5 @@ easyocr==1.2.2
 numpy==1.16.5
 numpydoc==0.9.1
 gunicorn==19.9.0
+torch==1.8.1+cpu 
+torchvision==0.9.1+cpu
