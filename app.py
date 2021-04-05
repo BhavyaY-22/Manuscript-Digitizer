@@ -8,7 +8,7 @@ import numpy
 import cv2
 
 app = Flask(__name__)
-
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 @app.route("/")
 def index():
     if os.path.isdir('tmp/'):
@@ -38,7 +38,7 @@ def vconcat_resize(img_list, interpolation = cv2.INTER_CUBIC):
 
 @app.route("/process", methods=["POST","GET"])
 def process():
-    target = 'tmp/'
+    target = os.path.join(APP_ROOT,'tmp/')
     if not os.path.isdir(target):
         os.mkdir(target)
     
@@ -46,26 +46,27 @@ def process():
         filename = file.filename
         dest = "/".join([target, filename])
         file.save(dest)
-    mypath='tmp/'
-    onlyfiles = [ f for f in listdir(mypath) if isfile(join(mypath,f)) ]
+    
+    onlyfiles = [ f for f in listdir(target) if isfile(join(target,f)) ]
     images = numpy.empty(len(onlyfiles), dtype=object)
     for n in range(0, len(onlyfiles)):
-        images[n] = cv2.imread( join(mypath,onlyfiles[n]) )
+        images[n] = cv2.imread( join(target,onlyfiles[n]) )
   
 
 
 
     img_v_resize = vconcat_resize([images[n] for n in range(0, len(onlyfiles))] )  
     # show the output image
-    cv2.imwrite('tmp/vconcat_resize.jpg', img_v_resize)
+    f = target+'vconcat_resize.jpg'
+    cv2.imwrite(f, img_v_resize)
     i = request.form.get("language")
     reader = easyocr.Reader([i])
     # image file to be extracted
     
-    file_name = "tmp/vconcat_resize.jpg"
-    Image(file_name)
+    
+    Image(f)
     # extracted text
-    ot = reader.readtext(file_name, detail=0)
+    ot = reader.readtext(f, detail=0)
     otext = ' '.join([str(elem) for elem in ot])
     encoded_unicode = otext.encode("utf8")
     a_file = open("output.txt", "wb")
